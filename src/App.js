@@ -12,7 +12,7 @@ function App() {
       <div className="container pt-4">
         <Routes>
           <Route path="/about" element={<About />} />
-          <Route path="/profile:name" exact element={<Profile />} />
+          <Route path="/profile/:name" exact element={<Profile />} />
           <Route path="/" element={<Home />} />
           <Route path="*" element={<Navigate replace to="/" />} />
         </Routes>

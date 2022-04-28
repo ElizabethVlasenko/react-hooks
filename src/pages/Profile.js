@@ -1,4 +1,4 @@
-import React, { Fragment, useContext, useEffect } from "react";
+import React, { Fragment, useContext, useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { Repos } from "../components/Repos";
 import { GithubContext } from "../context/github/GithubContext";
@@ -6,6 +6,11 @@ import { GithubContext } from "../context/github/GithubContext";
 export const Profile = () => {
   const { getUser, getRepos, loading, user, repos } = useContext(GithubContext);
   const { name: urlName } = useParams();
+  const [reposNumber, setReposNumber] = useState(5);
+
+  const showMore = () => {
+    setReposNumber((prev) => prev + 5);
+  };
   useEffect(() => {
     //ComponentDidMound()
     getUser(urlName);
@@ -30,18 +35,19 @@ export const Profile = () => {
     following,
     public_repos,
     public_gists,
+    type,
   } = user;
-  console.log(repos);
-
+  console.log(user);
+  //type: "Organization" type: "User"
   return (
     <Fragment>
-      <Link to="/" className="btn btn-link">
-        Main page
+      <Link to="/" className="btn btn-secondary mb-2">
+        <i className="bi bi-caret-left-fill"></i> Main page
       </Link>
       <div className="card mb-4">
         <div className="card-body">
           <div className="row">
-            <div className="col-sm-3 text-center">
+            <div className="col-sm-4 text-center border-end">
               <img src={avatar_url} alt={name} style={{ width: "150px" }} />
               <h1>{name}</h1>
               {location && <p>Location: {location}</p>}
@@ -53,15 +59,8 @@ export const Profile = () => {
                   <p>{bio}</p>
                 </Fragment>
               )}
-              <a
-                href={html_url}
-                className="btn btn-dark"
-                target="_blank"
-                rel="noreferrer"
-              >
-                Open profile
-              </a>
-              <ul>
+
+              <ul className="list-unstyled mt-3">
                 {login && (
                   <li>
                     <strong>Username: </strong>
@@ -89,13 +88,35 @@ export const Profile = () => {
               <div className="badge bg-success  me-2">
                 Following: {following}
               </div>
-              <div className="badge bg-info  me-2">Repos: {public_repos}</div>
+              <div className="badge bg-info  me-2">
+                Repositories: {public_repos}
+              </div>
               <div className="badge bg-dark">Gists: {public_gists}</div>
             </div>
           </div>
+          <div className="position-absolute top-0 end-0 me-1 btn disabled">
+            {type}
+          </div>
+          <a
+            href={html_url}
+            className="btn btn-primary position-absolute bottom-0 end-0 m-3"
+            target="_blank"
+            rel="noreferrer"
+          >
+            Open profile
+          </a>
         </div>
       </div>
-      <Repos repos={repos}></Repos>
+      <Repos repos={repos.slice(0, reposNumber)}></Repos>
+      {reposNumber < repos.length ? (
+        <div
+          className="btn btn-secondary mb-2 align-middle mx-auto d-block mb-3"
+          style={{ width: "150px" }}
+          onClick={showMore}
+        >
+          Show more
+        </div>
+      ) : null}
     </Fragment>
   );
 };

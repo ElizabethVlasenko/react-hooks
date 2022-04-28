@@ -19,7 +19,17 @@ function App() {
 
             <Routes>
               <Route path="/about" element={<About />} />
-              <Route path="/profile/:name" exact element={<Profile />} />
+              <Route path="/profile/:name" element={<Profile />} />
+              {/* <Route
+                path="/profile/:name"
+                exact
+                render={({ match }) =>
+                  match ? (
+                    <Profile match={match} animate={true} />
+                  ) : null
+                  // <NotFound />
+                }
+              /> */}
               <Route path="/" element={<Home />} />
               <Route path="*" element={<Navigate replace to="/" />} />
             </Routes>

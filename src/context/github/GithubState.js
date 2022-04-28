@@ -32,7 +32,6 @@ export const GithubState = ({ children }) => {
     const response = await axios.get(
       withClientData(`https://api.github.com/search/users?q=${value}&`)
     );
-    console.log(response.data);
     dispatch({
       type: SEARCH_USERS,
       payload: response.data.items,

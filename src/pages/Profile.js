@@ -1,5 +1,6 @@
 import React, { Fragment, useContext, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
+import { Repos } from "../components/Repos";
 import { GithubContext } from "../context/github/GithubContext";
 
 export const Profile = () => {
@@ -30,14 +31,13 @@ export const Profile = () => {
     public_repos,
     public_gists,
   } = user;
-  console.log(user);
+  console.log(repos);
 
   return (
     <Fragment>
       <Link to="/" className="btn btn-link">
         Main page
       </Link>
-
       <div className="card mb-4">
         <div className="card-body">
           <div className="row">
@@ -95,7 +95,7 @@ export const Profile = () => {
           </div>
         </div>
       </div>
-      {repos.join()}
+      <Repos repos={repos}></Repos>
     </Fragment>
   );
 };
